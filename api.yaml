@@ -34,7 +34,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TaskResponsePayload"
+                $ref: "#/components/schemas/Task"
   /api/task/task/{task_id:int}:
     parameters:
       - 
@@ -54,7 +54,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TaskResponsePayload"
+                $ref: "#/components/schemas/Task"
     put:
       tags:
         - "Task" 
@@ -70,7 +70,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TaskResponsePayload"
+                $ref: "#/components/schemas/Task"
   /api/task/tasks/{user_id:uuid}:
     parameters:
       - 
@@ -79,7 +79,21 @@ paths:
         required: true
         schema:
           type: string
-          description: ID of the user
+        description: ID of the user
+      - 
+        name: order_by
+        in: query
+        required: true
+        schema:
+          type: string
+        description: "field to order by. Choose from `time`, `priority`, `progress`, `start_time`"
+      - 
+        name: reverse
+        in: query
+        required: true
+        schema:
+          type: string
+        description: "`True` or `False`"
     get:
      tags:
        - "Task"
@@ -90,7 +104,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TaskResponsePayload"
+                $ref: "#/components/schemas/Task"
   /api/task/logs/{task_id:integer}:
     parameters:
       - 
@@ -198,7 +212,7 @@ components:
         logs:
           type: array
           items:
-            $ref: "#/components/schemas/Log"  
+            $ref: "#/components/schemas/Log" 
     Log:
       type: object
       properties:

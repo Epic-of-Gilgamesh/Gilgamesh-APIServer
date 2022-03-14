@@ -27,7 +27,6 @@ def is_manager(user):
 
 class TaskCreationAPI(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
-    # ensure requst user is logged in
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
@@ -54,7 +53,6 @@ class TaskCreationAPI(APIView):
 
 class TaskAPI(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
-    # ensure requst user is logged in
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
