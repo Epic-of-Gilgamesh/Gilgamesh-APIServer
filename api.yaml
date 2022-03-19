@@ -1,0 +1,230 @@
+openapi: "3.0.3"
+info:
+  title: "Gilgamesh"
+  version: "1.0.0"
+  description: "API for the Gilgamesh project"
+  termsOfService: "http://helloreverb.com/terms/"
+  contact:
+    name: "Yizhou Zhao"
+    email: "yizhouzhao27@gmail.com"
+    url: "http://swagger.io"
+paths:
+  /api/task/create-task/{user_id:uuid}:
+    parameters:
+      - 
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: UUID of the user
+    post:
+     tags:
+       - "Task"
+     description: "Creating a task for the given user with `user_id`"
+     requestBody:
+        description: The task to create.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskRequestPayload" 
+     responses:
+       200:
+          description: "The task is succesfully created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+  /api/task/task/{task_id:int}:
+    parameters:
+      - 
+        name: task_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: ID of the task
+    get:
+     tags:
+       - "Task"
+     description: "Get the task information of the given `task_id`"
+     responses:
+       200:
+          description: "The task is succesfully created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+    put:
+      tags:
+        - "Task" 
+      requestBody:
+        description: The task to create.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskRequestPayload"   
+      responses:
+        200:
+          description: "The task is succesfully created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+  /api/task/tasks/{user_id:uuid}:
+    parameters:
+      - 
+        name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the user
+      - 
+        name: order_by
+        in: query
+        required: true
+        schema:
+          type: string
+        description: "field to order by. Choose from `time`, `priority`, `progress`, `start_time`"
+      - 
+        name: reverse
+        in: query
+        required: true
+        schema:
+          type: string
+        description: "`True` or `False`"
+    get:
+     tags:
+       - "Task"
+     description: "Get the task information of the given `task_id`"
+     responses:
+       200:
+          description: "The task is succesfully created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+  /api/task/logs/{task_id:integer}:
+    parameters:
+      - 
+        name: task_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: ID of the task
+    get:
+      tags:
+        - "Task"
+      description: "Get the all logs of the given `task_id`"
+      responses:
+       200:
+          description: "The task is succesfully created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+    post:
+      tags:
+       - "Task"
+      description: "Get the all logs of the given `task_id`"
+      responses:
+       200:
+          description: "The task is succesfully created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Task"
+  /api/task/latest-log-of/{task_id:integer}:
+    parameters:
+      - 
+        name: task_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          description: ID of the task
+    get:
+      tags:
+        - "Task"
+      description: "Get the latest log of the given task"
+      responses:
+       200:
+          description: "The task is succesfully created"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Log"
+    
+components:
+  schemas:
+    TaskRequestPayload:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          description: Title of the task 
+        description:
+          type: string
+        priority:
+          type: string
+          description: Priority level of the task. Only valid among {S, A+, A, B, C}
+        progress:
+          type: integer
+          description: Progress of the task, ranging from 0 to 100
+    LogRequestPayload:
+      type: object
+      required:
+        - progress_flag
+      properties:
+        progress_flag:
+          type: integer
+          description: Progress ranging from 0 to 100
+        notes:
+          type: string
+          description: Description of the log
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        user:
+          type: string
+          description: user ID
+        start_time:
+          type: string
+          description: In format of ISO-8601
+        end_time:
+          type: string
+        status:
+          type: string
+        priority:
+          type: string
+        progress:
+          type: string
+        logs:
+          type: array
+          items:
+            $ref: "#/components/schemas/Log" 
+    Log:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the log
+        task_id:
+          type: integer
+          description: Task ID
+        time:
+          type: string
+        notes:
+          type: string
+        progress_flag:
+          type: integer

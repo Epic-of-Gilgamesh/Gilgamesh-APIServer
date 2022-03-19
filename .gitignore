@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Configuration files
+.conf/
+
+# migration files
+/migrations
